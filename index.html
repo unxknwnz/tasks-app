@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мульти-Задачи</title>
+    <link rel="stylesheet" href="style.css?v=2">
+    <link rel="manifest" href="manifest.json?v=2">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Панель управления окнами -->
+        <div class="windows-controls">
+            <button onclick="createNewWindow()" class="new-window-btn">➕ Новый список</button>
+            <div class="windows-list" id="windowsList">
+                <!-- Окна будут добавляться здесь -->
+            </div>
+        </div>
+
+        <!-- Контейнер для окон -->
+        <div class="windows-container" id="windowsContainer">
+            <!-- Окна будут создаваться здесь -->
+        </div>
+    </div>
+
+    <footer class="app-footer">
+        <div class="footer-text">Bannister FAMQ</div>
+    </footer>
+
+    <script src="script.js?v=2"></script>
+</body>
+</html>
