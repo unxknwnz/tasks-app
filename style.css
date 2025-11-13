@@ -1,3 +1,5 @@
+
+
 * {
     margin: 0;
     padding: 0;
@@ -425,4 +427,241 @@ body {
 
 .window-tasks-list::-webkit-scrollbar-thumb:hover {
     background: var(--primary-color);
+}
+
+/* ==================== */
+/* АНИМАЦИИ И ПЕРЕХОДЫ */
+/* ==================== */
+
+/* Плавные переходы для всех интерактивных элементов */
+.window,
+.window-task-item,
+.window-tab,
+.theme-btn,
+button {
+    transition: all 0.3s ease;
+}
+
+/* Анимация появления нового окна */
+@keyframes windowAppear {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.window {
+    animation: windowAppear 0.4s ease-out;
+}
+
+/* Анимация удаления окна */
+.window.removing {
+    animation: windowDisappear 0.3s ease-in forwards;
+}
+
+@keyframes windowDisappear {
+    to {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.8);
+    }
+}
+
+/* Анимация для задач */
+@keyframes taskAppear {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.window-task-item {
+    animation: taskAppear 0.3s ease-out;
+}
+
+/* Анимация удаления задачи */
+.window-task-item.removing {
+    animation: taskRemove 0.25s ease-in forwards;
+}
+
+@keyframes taskRemove {
+    to {
+        opacity: 0;
+        transform: translateX(100%);
+        height: 0;
+        padding: 0;
+        margin: 0;
+        border: none;
+    }
+}
+
+/* Анимация выполнения задачи
+.window-task-item.completed {
+    position: relative;
+}
+
+.window-task-item.completed::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--secondary-color);
+    animation: strikeThrough 0.3s ease-out forwards;
+}
+
+@keyframes strikeThrough {
+    to {
+        width: 100%;
+    }
+} */
+
+/* Анимация переключения темы */
+body {
+    transition: background 0.5s ease, color 0.3s ease;
+}
+
+.app-footer,
+.windows-controls,
+.window {
+    transition: background-color 0.5s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Анимация наведения на кнопки */
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px var(--shadow-color);
+}
+
+.theme-btn:hover {
+    transform: scale(1.15);
+}
+
+/* Анимация активной кнопки темы */
+.theme-btn.active {
+    transform: scale(1.2);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+}
+
+/* Анимация прогресс-бара */
+.progress-fill {
+    transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Анимация появления placeholder при пустом списке */
+.empty-window-state {
+    animation: fadeIn 0.6s ease-out;
+}
+
+/* Анимация вкладок окон */
+.window-tab {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.window-tab:hover {
+    transform: translateY(-1px);
+}
+
+.window-tab.active {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+/* Анимация поля ввода */
+.window-input {
+    transition: all 0.3s ease;
+}
+
+.window-input:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px var(--shadow-color);
+}
+
+/* Анимация появления статистики */
+.window-stats {
+    animation: fadeInUp 0.5s ease-out 0.2s both;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Анимация пульсации для новых элементов */
+@keyframes pulseGlow {
+    0% {
+        box-shadow: 0 0 0 0 rgba(79, 172, 254, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(79, 172, 254, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(79, 172, 254, 0);
+    }
+}
+
+.window.new-highlight {
+    animation: pulseGlow 2s ease-out;
+}
+
+/* Анимация встряски для ошибок
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+.window-input.error {
+    animation: shake 0.4s ease-in-out;
+    border-color: var(--accent-color);
+} */
+
+/* Плавное появление футера */
+.app-footer {
+    animation: slideInLeft 0.6s ease-out 0.3s both;
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Анимация для чекбоксов
+.window-task-checkbox {
+    transition: all 0.2s ease;
+}
+
+.window-task-checkbox:checked {
+    transform: scale(1.1);
+} */
+
+/* Адаптивные анимации для мобильных */
+@media (max-width: 768px) {
+    .window {
+        animation: windowAppear 0.3s ease-out;
+    }
+    
+    button:hover {
+        transform: none; /* Отключаем трансформации на мобильных */
+    }
 }
