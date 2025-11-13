@@ -23,18 +23,19 @@ function switchTheme(themeName) {
     applyTheme(themeName);
 }
 
-// Применение темы
+// Применение темы с анимацией
 function applyTheme(themeName) {
     document.documentElement.setAttribute('data-theme', themeName);
     
-    // Обновляем активную кнопку темы
+    // Обновляем активную кнопку темы с анимацией
     document.querySelectorAll('.theme-btn').forEach(btn => {
+        btn.classList.remove('active');
         btn.style.transform = 'scale(1)';
     });
     
     const activeBtn = document.querySelector(`.theme-btn.${themeName}-theme`);
     if (activeBtn) {
-        activeBtn.style.transform = 'scale(1.2)';
+        activeBtn.classList.add('active');
     }
 }
 
@@ -296,6 +297,56 @@ document.addEventListener('keypress', function(e) {
         addTask(parseInt(windowId));
     }
 });
+
+// Удаление задачи с анимацией
+function deleteTask(windowId, taskId) {
+    if (confirm('Удалить эту задачу?')) {
+        // Находим элемент задачи
+        const taskElement = document.querySelector(`.window-task-item input[onchange*="${taskId}"]`).closest('.window-task-item');
+        
+        // Добавляем класс для анимации
+        taskElement.classList.add('removing');
+        
+        // Удаляем после анимации
+        setTimeout(() => {
+            windows = windows.map(win => {
+                if (win.id === windowId) {
+                    return {
+                        ...win,
+                        tasks: win.tasks.filter(task => task.id !== taskId)
+                    };
+                }
+                return win;
+            });
+            
+            saveWindows();
+            renderWindows();
+        }, 250); // Время должно совпадать с длительностью анимации
+    }
+}
+
+// Удаление окна с анимацией
+function deleteWindow(windowId) {
+    if (windows.length <= 1) {
+        alert('Должен остаться хотя бы один список');
+        return;
+    }
+    
+    if (confirm('Удалить этот список со всеми задачами?')) {
+        // Находим элемент окна
+        const windowElement = document.querySelector(`.window[data-window-id="${windowId}"]`);
+        
+        // Добавляем класс для анимации
+        windowElement.classList.add('removing');
+        
+        // Удаляем после анимации
+        setTimeout(() => {
+            windows = windows.filter(win => win.id !== windowId);
+            saveWindows();
+            renderWindows();
+        }, 300);
+    }
+}
 
 // Инициализация при загрузке
 document.addEventListener('DOMContentLoaded', init);
