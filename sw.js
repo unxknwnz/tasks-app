@@ -1,10 +1,10 @@
 const CACHE_NAME = 'tasks-app-v2'; // Изменили версию
 const urlsToCache = [
     '/',
-    '/index.html?v=2',
-    '/style.css?v=2',
-    '/script.js?v=2',
-    '/manifest.json?v=2'
+    '/index.html?v=10',
+    '/style.css?v=10',
+    '/script.js?v=10',
+    '/manifest.json?v=10'
 ];
 
 self.addEventListener('install', function(event) {
