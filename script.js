@@ -1,8 +1,12 @@
 // Структура данных для окон
 let windows = JSON.parse(localStorage.getItem('taskWindows')) || [];
+let currentTheme = localStorage.getItem('appTheme') || 'blue';
 
 // Инициализация приложения
 function init() {
+    // Применяем сохраненную тему
+    applyTheme(currentTheme);
+    
     // Если окон нет, создаем первое
     if (windows.length === 0) {
         createNewWindow();
@@ -12,28 +16,38 @@ function init() {
     setupServiceWorker();
 }
 
+// Переключение темы
+function switchTheme(themeName) {
+    currentTheme = themeName;
+    localStorage.setItem('appTheme', themeName);
+    applyTheme(themeName);
+}
+
+// Применение темы
+function applyTheme(themeName) {
+    document.documentElement.setAttribute('data-theme', themeName);
+    
+    // Обновляем активную кнопку темы
+    document.querySelectorAll('.theme-btn').forEach(btn => {
+        btn.style.transform = 'scale(1)';
+    });
+    
+    const activeBtn = document.querySelector(`.theme-btn.${themeName}-theme`);
+    if (activeBtn) {
+        activeBtn.style.transform = 'scale(1.2)';
+    }
+}
+
 // Настройка Service Worker для PWA
 function setupServiceWorker() {
     if ('serviceWorker' in navigator) {
-        // Добавляем версию к URL Service Worker
-        const swUrl = '/sw.js?v=2';
-        
-        navigator.serviceWorker.register(swUrl)
+        navigator.serviceWorker.register('/sw.js')
             .then(registration => {
                 console.log('SW registered: ', registration);
-                
-                // Принудительное обновление при изменении версии
-                registration.update();
             })
             .catch(registrationError => {
                 console.log('SW registration failed: ', registrationError);
             });
-            
-        // Обработка обновлений
-        navigator.serviceWorker.addEventListener('controllerchange', () => {
-            console.log('New Service Worker activated');
-            window.location.reload();
-        });
     }
 }
 
