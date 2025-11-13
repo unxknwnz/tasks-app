@@ -99,6 +99,7 @@ function renameWindow(windowId) {
 }
 
 // Добавление задачи в конкретное окно
+// Добавление задачи в конкретное окно
 function addTask(windowId) {
     const input = document.querySelector(`.window[data-window-id="${windowId}"] .window-input`);
     const text = input.value.trim();
@@ -108,14 +109,15 @@ function addTask(windowId) {
         return;
     }
     
+    const newTask = {
+        id: Date.now(),
+        text: text,
+        completed: false,
+        createdAt: new Date().toISOString()
+    };
+    
     windows = windows.map(win => {
         if (win.id === windowId) {
-            const newTask = {
-                id: Date.now(),
-                text: text,
-                completed: false,
-                createdAt: new Date().toISOString()
-            };
             return {
                 ...win,
                 tasks: [...win.tasks, newTask]
@@ -125,13 +127,47 @@ function addTask(windowId) {
     });
     
     saveWindows();
-    renderWindows();
+    
+    // Очищаем поле ввода
     input.value = '';
     input.focus();
+    
+    // Обновляем только список задач этого окна
+    updateTasksList(windowId);
+    updateWindowStats(windowId);
 }
 
-// Переключение статуса задачи
+// Обновляем только список задач конкретного окна
+function updateTasksList(windowId) {
+    const window = windows.find(win => win.id === windowId);
+    if (!window) return;
+    
+    const tasksList = document.querySelector(`.window[data-window-id="${windowId}"] .window-tasks-list`);
+    if (!tasksList) return;
+    
+    if (window.tasks.length === 0) {
+        tasksList.innerHTML = `
+            <div class="empty-window-state">
+                <p>📝 Задач пока нет</p>
+                <p>Добавьте первую задачу!</p>
+            </div>
+        `;
+    } else {
+        // Обновляем только если изменилось количество задач
+        const currentTaskCount = tasksList.querySelectorAll('.window-task-item').length;
+        if (currentTaskCount !== window.tasks.length) {
+            tasksList.innerHTML = renderWindowTasks(window);
+        }
+    }
+}
+
+// Переключение статуса задачи БЕЗ перерисовки всего окна
 function toggleTask(windowId, taskId) {
+    // Находим элемент задачи ДО изменения данных
+    const taskElement = document.querySelector(`.window-task-item input[onchange*="${taskId}"]`).closest('.window-task-item');
+    const taskText = taskElement.querySelector('.window-task-text');
+    
+    // Обновляем данные
     windows = windows.map(win => {
         if (win.id === windowId) {
             return {
@@ -145,41 +181,129 @@ function toggleTask(windowId, taskId) {
     });
     
     saveWindows();
-    renderWindows();
+    
+    // Обновляем только визуальное состояние этой задачи
+    if (taskElement && taskText) {
+        if (windows.find(win => win.id === windowId)?.tasks.find(task => task.id === taskId)?.completed) {
+            taskElement.classList.add('completed');
+            taskText.style.textDecoration = 'line-through';
+            taskText.style.color = 'var(--text-muted)';
+        } else {
+            taskElement.classList.remove('completed');
+            taskText.style.textDecoration = 'none';
+            taskText.style.color = 'var(--text-color)';
+        }
+    }
+    
+    // Обновляем только статистику и прогресс-бар этого окна
+    updateWindowStats(windowId);
 }
 
-// Удаление задачи
+// Удаление задачи с анимацией но без полной перерисовки
 function deleteTask(windowId, taskId) {
     if (confirm('Удалить эту задачу?')) {
+        // Находим элемент задачи
+        const taskElement = document.querySelector(`.window-task-item input[onchange*="${taskId}"]`).closest('.window-task-item');
+        
+        // Добавляем класс для анимации
+        taskElement.classList.add('removing');
+        
+        // Удаляем после анимации
+        setTimeout(() => {
+            windows = windows.map(win => {
+                if (win.id === windowId) {
+                    return {
+                        ...win,
+                        tasks: win.tasks.filter(task => task.id !== taskId)
+                    };
+                }
+                return win;
+            });
+            
+            saveWindows();
+            
+            // После удаления обновляем статистику
+            updateWindowStats(windowId);
+            
+            // Если задач не осталось, показываем placeholder
+            const window = windows.find(win => win.id === windowId);
+            const tasksList = document.querySelector(`.window[data-window-id="${windowId}"] .window-tasks-list`);
+            if (window.tasks.length === 0 && tasksList) {
+                tasksList.innerHTML = `
+                    <div class="empty-window-state">
+                        <p>📝 Задач пока нет</p>
+                        <p>Добавьте первую задачу!</p>
+                    </div>
+                `;
+            }
+        }, 250);
+    }
+}
+
+// Обновляем только статистику окна без полной перерисовки
+function updateWindowStats(windowId) {
+    const window = windows.find(win => win.id === windowId);
+    if (!window) return;
+    
+    const completedCount = window.tasks.filter(task => task.completed).length;
+    const totalCount = window.tasks.length;
+    const progressPercent = totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
+    
+    // Находим элементы статистики этого окна
+    const windowElement = document.querySelector(`.window[data-window-id="${windowId}"]`);
+    if (windowElement) {
+        const resetBtn = windowElement.querySelector('.window-reset-btn');
+        const stats = windowElement.querySelector('.window-stats');
+        const progressFill = windowElement.querySelector('.progress-fill');
+        
+        if (resetBtn) {
+            resetBtn.textContent = `Сбросить выполненные (${completedCount}/${totalCount})`;
+        }
+        if (stats) {
+            stats.textContent = `Выполнено: ${completedCount} из ${totalCount}`;
+        }
+        if (progressFill) {
+            progressFill.style.width = `${progressPercent}%`;
+        }
+    }
+}
+
+// Сброс всех галочек в окне БЕЗ перерисовки
+function resetWindowTasks(windowId) {
+    if (confirm('Сбросить все выполненные задачи?')) {
         windows = windows.map(win => {
             if (win.id === windowId) {
                 return {
                     ...win,
-                    tasks: win.tasks.filter(task => task.id !== taskId)
+                    tasks: win.tasks.map(task => ({ ...task, completed: false }))
                 };
             }
             return win;
         });
         
         saveWindows();
-        renderWindows();
-    }
-}
-
-// Сброс всех галочек в окне
-function resetWindowTasks(windowId) {
-    windows = windows.map(win => {
-        if (win.id === windowId) {
-            return {
-                ...win,
-                tasks: win.tasks.map(task => ({ ...task, completed: false }))
-            };
+        
+        // Обновляем все задачи в этом окне
+        const windowElement = document.querySelector(`.window[data-window-id="${windowId}"]`);
+        if (windowElement) {
+            const taskItems = windowElement.querySelectorAll('.window-task-item');
+            taskItems.forEach(item => {
+                item.classList.remove('completed');
+                const text = item.querySelector('.window-task-text');
+                if (text) {
+                    text.style.textDecoration = 'none';
+                    text.style.color = 'var(--text-color)';
+                }
+                const checkbox = item.querySelector('.window-task-checkbox');
+                if (checkbox) {
+                    checkbox.checked = false;
+                }
+            });
+            
+            // Обновляем статистику
+            updateWindowStats(windowId);
         }
-        return win;
-    });
-    
-    saveWindows();
-    renderWindows();
+    }
 }
 
 // Отображение всех окон
