@@ -4,29 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Мульти-Задачи</title>
-    <link rel="stylesheet" href="style.css?v=2">
-    <link rel="manifest" href="manifest.json?v=2">
+    <link rel="stylesheet" href="style.css?v=3">
+    <link rel="manifest" href="manifest.json?v=3">
 </head>
 <body>
     <div class="app-container">
-        <!-- Панель управления окнами -->
-        <div class="windows-controls">
-            <button onclick="createNewWindow()" class="new-window-btn">➕ Новый список</button>
-            <div class="windows-list" id="windowsList">
-                <!-- Окна будут добавляться здесь -->
-            </div>
+        <!-- Панель управления темами -->
+        <div class="theme-controls">
+            <button onclick="switchTheme('blue')" class="theme-btn blue-theme" title="Синяя тема">🔵</button>
+            <button onclick="switchTheme('pink')" class="theme-btn pink-theme" title="Розовая тема">🌸</button>
+            <button onclick="switchTheme('dark')" class="theme-btn dark-theme" title="Тёмная тема">🌙</button>
         </div>
 
-        <!-- Контейнер для окон -->
-        <div class="windows-container" id="windowsContainer">
-            <!-- Окна будут создаваться здесь -->
+        <!-- Остальной код без изменений -->
+        <div class="windows-controls">
+            <button onclick="createNewWindow()" class="new-window-btn">➕ Новый список</button>
+            <div class="windows-list" id="windowsList"></div>
         </div>
+
+        <div class="windows-container" id="windowsContainer"></div>
     </div>
 
     <footer class="app-footer">
         <div class="footer-text">Bannister FAMQ</div>
     </footer>
 
-    <script src="script.js?v=2"></script>
+    <script src="script.js?v=3"></script>
 </body>
 </html>
