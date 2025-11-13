@@ -430,7 +430,7 @@ body {
 }
 
 /* ==================== */
-/* АНИМАЦИИ И ПЕРЕХОДЫ */
+/* АНИМАЦИИ И ПЕРЕХОДЫ - ОСЛАБЛЕННЫЕ */
 /* ==================== */
 
 /* Плавные переходы для всех интерактивных элементов */
@@ -442,11 +442,11 @@ button {
     transition: all 0.3s ease;
 }
 
-/* Анимация появления нового окна */
+/* Анимация появления нового окна (ослаблена в 2 раза) */
 @keyframes windowAppear {
     from {
         opacity: 0;
-        transform: translateY(30px) scale(0.9);
+        transform: translateY(15px) scale(0.95); /* было 30px и 0.9 */
     }
     to {
         opacity: 1;
@@ -455,10 +455,10 @@ button {
 }
 
 .window {
-    animation: windowAppear 0.4s ease-out;
+    animation: windowAppear 0.4s ease-out; /* оставляем прежнюю длительность */
 }
 
-/* Анимация удаления окна */
+/* Анимация удаления окна (ослаблена в 2 раза) */
 .window.removing {
     animation: windowDisappear 0.3s ease-in forwards;
 }
@@ -466,15 +466,15 @@ button {
 @keyframes windowDisappear {
     to {
         opacity: 0;
-        transform: translateY(-20px) scale(0.8);
+        transform: translateY(-10px) scale(0.9); /* было -20px и 0.8 */
     }
 }
 
-/* Анимация для задач */
+/* Анимация для задач (ослаблена в 2 раза) */
 @keyframes taskAppear {
     from {
         opacity: 0;
-        transform: translateX(-20px);
+        transform: translateX(-10px); /* было -20px */
     }
     to {
         opacity: 1;
@@ -486,7 +486,7 @@ button {
     animation: taskAppear 0.3s ease-out;
 }
 
-/* Анимация удаления задачи */
+/* Анимация удаления задачи (ослаблена в 2 раза) */
 .window-task-item.removing {
     animation: taskRemove 0.25s ease-in forwards;
 }
@@ -494,35 +494,13 @@ button {
 @keyframes taskRemove {
     to {
         opacity: 0;
-        transform: translateX(100%);
+        transform: translateX(50%); /* было 100% */
         height: 0;
         padding: 0;
         margin: 0;
         border: none;
     }
 }
-
-/* Анимация выполнения задачи
-.window-task-item.completed {
-    position: relative;
-}
-
-.window-task-item.completed::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 50%;
-    width: 0;
-    height: 2px;
-    background: var(--secondary-color);
-    animation: strikeThrough 0.3s ease-out forwards;
-}
-
-@keyframes strikeThrough {
-    to {
-        width: 100%;
-    }
-} */
 
 /* Анимация переключения темы */
 body {
@@ -535,20 +513,20 @@ body {
     transition: background-color 0.5s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Анимация наведения на кнопки */
+/* Анимация наведения на кнопки (ослаблена в 2 раза) */
 button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px var(--shadow-color);
+    transform: translateY(-1px); /* было -2px */
+    box-shadow: 0 4px 15px var(--shadow-color); /* было 6px 20px */
 }
 
 .theme-btn:hover {
-    transform: scale(1.15);
+    transform: scale(1.08); /* было 1.15 */
 }
 
-/* Анимация активной кнопки темы */
+/* Анимация активной кнопки темы (ослаблена) */
 .theme-btn.active {
-    transform: scale(1.2);
-    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+    transform: scale(1.1); /* было 1.2 */
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3); /* было 3px */
 }
 
 /* Анимация прогресс-бара */
@@ -561,31 +539,31 @@ button:hover {
     animation: fadeIn 0.6s ease-out;
 }
 
-/* Анимация вкладок окон */
+/* Анимация вкладок окон (ослаблена в 2 раза) */
 .window-tab {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .window-tab:hover {
-    transform: translateY(-1px);
+    transform: translateY(-0.5px); /* было -1px */
 }
 
 .window-tab.active {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px var(--shadow-color);
+    transform: translateY(-1px); /* было -2px */
+    box-shadow: 0 3px 8px var(--shadow-color); /* было 4px 12px */
 }
 
-/* Анимация поля ввода */
+/* Анимация поля ввода (ослаблена в 2 раза) */
 .window-input {
     transition: all 0.3s ease;
 }
 
 .window-input:focus {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 20px var(--shadow-color);
+    transform: translateY(-0.5px); /* было -1px */
+    box-shadow: 0 4px 15px var(--shadow-color); /* было 6px 20px */
 }
 
-/* Анимация появления статистики */
+/* Анимация появления статистики (ослаблена в 2 раза) */
 .window-stats {
     animation: fadeInUp 0.5s ease-out 0.2s both;
 }
@@ -593,7 +571,7 @@ button:hover {
 @keyframes fadeInUp {
     from {
         opacity: 0;
-        transform: translateY(10px);
+        transform: translateY(5px); /* было 10px */
     }
     to {
         opacity: 1;
@@ -601,13 +579,13 @@ button:hover {
     }
 }
 
-/* Анимация пульсации для новых элементов */
+/* Анимация пульсации для новых элементов (ослаблена) */
 @keyframes pulseGlow {
     0% {
-        box-shadow: 0 0 0 0 rgba(79, 172, 254, 0.4);
+        box-shadow: 0 0 0 0 rgba(79, 172, 254, 0.3); /* была прозрачность 0.4 */
     }
     70% {
-        box-shadow: 0 0 0 10px rgba(79, 172, 254, 0);
+        box-shadow: 0 0 0 8px rgba(79, 172, 254, 0); /* было 10px */
     }
     100% {
         box-shadow: 0 0 0 0 rgba(79, 172, 254, 0);
@@ -618,19 +596,7 @@ button:hover {
     animation: pulseGlow 2s ease-out;
 }
 
-/* Анимация встряски для ошибок
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    75% { transform: translateX(5px); }
-}
-
-.window-input.error {
-    animation: shake 0.4s ease-in-out;
-    border-color: var(--accent-color);
-} */
-
-/* Плавное появление футера */
+/* Плавное появление футера (ослаблено в 2 раза) */
 .app-footer {
     animation: slideInLeft 0.6s ease-out 0.3s both;
 }
@@ -638,22 +604,13 @@ button:hover {
 @keyframes slideInLeft {
     from {
         opacity: 0;
-        transform: translateX(-30px);
+        transform: translateX(-15px); /* было -30px */
     }
     to {
         opacity: 1;
         transform: translateX(0);
     }
 }
-
-/* Анимация для чекбоксов
-.window-task-checkbox {
-    transition: all 0.2s ease;
-}
-
-.window-task-checkbox:checked {
-    transform: scale(1.1);
-} */
 
 /* Адаптивные анимации для мобильных */
 @media (max-width: 768px) {
@@ -662,6 +619,6 @@ button:hover {
     }
     
     button:hover {
-        transform: none; /* Отключаем трансформации на мобильных */
+        transform: none;
     }
 }
