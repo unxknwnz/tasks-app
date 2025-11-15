@@ -4,31 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Мульти-Задачи</title>
-    <link rel="stylesheet" href="style.css?v=10">
-    <link rel="manifest" href="manifest.json?v=10">
+    <link rel="stylesheet" href="style.css?v=18">
+    <link rel="manifest" href="manifest.json?v=18">
+    <style>
+        /* Временный стиль чтобы убедиться что кнопка видна */
+        .timers-toggle-btn {
+            display: flex !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+    </style>
 </head>
 <body>
     <div class="app-container">
         <!-- Панель управления темами -->
         <div class="theme-controls">
-            <button onclick="switchTheme('blue')" class="theme-btn blue-theme" title="Синяя тема">🔵</button>
-            <button onclick="switchTheme('pink')" class="theme-btn pink-theme" title="Розовая тема">🌸</button>
-            <button onclick="switchTheme('dark')" class="theme-btn dark-theme" title="Тёмная тема">🌙</button>
+            <button class="theme-btn blue-theme" title="Синяя тема">🔵</button>
+            <button class="theme-btn pink-theme" title="Розовая тема">🌸</button>
+            <button class="theme-btn dark-theme" title="Тёмная тема">🌙</button>
         </div>
 
-        <!-- Остальной код без изменений -->
+        <!-- Панель управления окнами -->
         <div class="windows-controls">
-            <button onclick="createNewWindow()" class="new-window-btn">➕ Новый список</button>
-            <div class="windows-list" id="windowsList"></div>
+            <button class="new-window-btn">➕ Новый список</button>
+            <div class="windows-list" id="windowsList">
+                <!-- Окна будут добавляться здесь -->
+            </div>
         </div>
 
-        <div class="windows-container" id="windowsContainer"></div>
+        <!-- Контейнер для окон -->
+        <div class="windows-container" id="windowsContainer">
+            <!-- Окна будут создаваться здесь -->
+        </div>
+    </div>
+
+    <!-- Меню таймеров - убедитесь что этот блок присутствует -->
+    <div class="timers-menu">
+        <button class="timers-toggle-btn">⏰</button>
+        <div class="timers-container" id="timersContainer">
+            <!-- Таймеры будут добавляться здесь -->
+        </div>
+        <button class="add-timer-btn">➕ Таймер</button>
     </div>
 
     <footer class="app-footer">
-        <div class="footer-text">Bannister FAMQ</div>
-    </footer>
+    <div class="footer-text">by hiki ✨</div>
+</footer>
 
-    <script src="script.js?v=12"></script>
+    <script src="script.js?v=21"></script>
 </body>
 </html>
