@@ -2,7 +2,7 @@
     "name": "Мульти-Задачи",
     "short_name": "МультиЗадачи",
     "description": "Приложение для управления задачами в нескольких списках",
-    "start_url": "/index.html?v=2",
+    "start_url": "/index.html?v=17",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#4facfe",
