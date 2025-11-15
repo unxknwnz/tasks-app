@@ -1,25 +1,25 @@
-const CACHE_NAME = 'tasks-app-v2'; // Изменили версию
+const CACHE_NAME = 'tasks-app-v17';
 const urlsToCache = [
     '/',
-    '/index.html?v=10',
-    '/style.css?v=10',
-    '/script.js?v=10',
-    '/manifest.json?v=10'
+    '/index.html?v=17',
+    '/style.css?v=17',
+    '/script.js?v=17',
+    '/manifest.json?v=17'
 ];
 
 self.addEventListener('install', function(event) {
-    console.log('Service Worker installing v2');
+    console.log('Service Worker installing v17');
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then(function(cache) {
-                console.log('Opened cache v2');
+                console.log('Opened cache v17');
                 return cache.addAll(urlsToCache);
             })
     );
 });
 
 self.addEventListener('activate', function(event) {
-    console.log('Service Worker activating v2');
+    console.log('Service Worker activating v17');
     event.waitUntil(
         caches.keys().then(function(cacheNames) {
             return Promise.all(
@@ -38,7 +38,6 @@ self.addEventListener('fetch', function(event) {
     event.respondWith(
         caches.match(event.request)
             .then(function(response) {
-                // Возвращаем кеш если есть, иначе запрашиваем сеть
                 if (response) {
                     return response;
                 }
